@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="The Vibe Vault - Premium men's fashion brand. Bold streetwear, tailored layers, and everyday essentials curated in Indore." />
+    <meta name="keywords" content="mens fashion, streetwear, tailored clothing, premium fashion, Indore, The Vibe Vault" />
+    <meta name="theme-color" content="#050505" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="The Vibe Vault | Where Fashion Meets Energy" />
+    <meta property="og:description" content="Premium men's fits curated in Indore. Bold streetwear, tailored layers, and everyday essentials." />
+    <meta property="og:url" content="https://the-vibe-vault.vercel.app/" />
+    <meta property="og:image" content="./logo.png" />
+    <title>The Vibe Vault | Premium Men's Fashion</title>
+    
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" referrerpolicy="no-referrer" />
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="icon" href="./logo.png" type="image/png" />
+  </head>
+  <body class="loading">
+    <!-- Preloader -->
+    <div id="preloader">
+      <div class="preloader-logo">VV</div>
+      <div class="preloader-text" id="preloader-phrase">Curating Vibes...</div>
+      <div class="preloader-bar"><div class="preloader-fill" id="preloader-fill"></div></div>
+      <div class="preloader-percent" id="preloader-percent">0%</div>
+    </div>
+
+    <!-- Scroll Progress -->
+    <div id="scroll-progress"></div>
+
+    <!-- Custom Cursor -->
+    <div id="cursor-glow"></div>
+
+    <!-- Particle Canvas -->
+    <canvas id="particles"></canvas>
+
+    <!-- Mouse Gradient -->
+    <div class="mouse-gradient" id="mouse-gradient"></div>
+
+    <!-- Background Blobs -->
+    <div class="page-blob page-blob-1"></div>
+    <div class="page-blob page-blob-2"></div>
+    <div class="page-blob page-blob-3"></div>
+
+    <!-- React Root -->
+    <div id="root"></div>
+
+    <!-- CDN Scripts -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+
+    <!-- React App Script -->
+    <script>
+'use strict';
+var e = React.createElement;
+var _R = React, useEffect = _R.useEffect, useRef = _R.useRef, useState = _R.useState, useCallback = _R.useCallback;
+
+// ==================== DATA ====================
+var logoSrc = './logo.png';
+
+var products = [
+  { name: 'Classic Street T-Shirt', category: 'T-Shirts', price: '₹499', image: 'https://images.unsplash.com/photo-1492447166138-50c3889fccb1?auto=format&fit=crop&w=900&q=80', desc: 'Crafted from premium heavy cotton for the perfect streetwear drape. Clean neckline, robust seams, and tailored fit.' },
+  { name: 'Weekend Polo Fit', category: 'Polo Shirts', price: '₹799', image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=80', desc: 'The perfect blend of athletic function and clean weekend vibes. Soft pique cotton weave that carries structure.' },
+  { name: 'Sharp Dress Shirt', category: 'Dress Shirts', price: '₹999', image: './Dress Shirts.webp', desc: 'Crisp collar and tailored curves for clean formal presentations. High-density yarn for a smooth finish.' },
+  { name: 'Cozy Street Sweatshirt', category: 'Sweatshirts', price: '₹1,299', image: './Sweatshirts.webp', desc: 'Inner brushed fleece for luxury warmth. Minimalist streetwear cut that matches cargos or denim perfectly.' },
+  { name: 'Layered Knit Sweater', category: 'Sweaters', price: '₹1,499', image: './Sweaters.jpg', desc: 'Intricate knit patterning with premium weight. A warm layer built to elevate cold-weather styles.' },
+  { name: 'Essential Street Hoodie', category: 'Hoodies', price: '₹1,199', image: './Hoodies.jpg', desc: 'Heavyweight loopback hood with clean side pockets. An Indore signature designed for daily street armor.' },
+  { name: 'Everyday Slim Jeans', category: 'Jeans', price: '₹1,099', image: './jeans.jpg', desc: 'Classic indigo stretch denim. Built to weather daily journeys while holding its modern silhouette.' },
+  { name: 'Utility Cargo Pants', category: 'Cargo Pants', price: '₹1,299', image: './cargo pants.webp', desc: 'Side utility storage pockets with structured drawstrings. Bold streetwear energy engineered for utility.' },
+  { name: 'Clean Sweatpants', category: 'Sweatpants', price: '₹899', image: './Sweatpants.jpg', desc: 'Ultimate comfort loopback sweatpants. Tapered cut that performs cleanly at home or on quick runs.' },
+  { name: 'Tailored Dress Pants', category: 'Dress Pants', price: '₹1,399', image: './Dress Pants.jpg', desc: 'Sleek visual lines with customized flexible fit. Perfect accompaniment for blazers or tailored shirts.' },
+  { name: 'Traditional Kurta', category: 'Kurta', price: '₹999', image: './kurta.jpg', desc: 'Sophisticated traditional weave with modern cuts. Perfect for celebrations that demand premium vibes.' },
+  { name: 'Luxury Winter Jackets', category: 'Jackets', price: '₹2,499', image: './Jackets.jpg', desc: 'Insulated shell with weather-resistant build. Heavy collar stitching and hardware built to keep the energy warm.' },
+  { name: 'Professional Blazers', category: 'Blazers', price: '₹2,999', image: './blazers.jpg', desc: 'Structured shoulder curves and satin lining. A premium tailored statement for luxury evening profiles.' },
+];
+
+var featuredItems = [
+  { title: 'Pant & Shirt Combination', tag: 'Trending', image: './Pant & Shirt Combination.jpg' },
+  { title: 'T-Shirt & Jeans with Jacket', tag: 'Best Seller', image: './T-Shirt, Jeans with Jacket.jpg' },
+  { title: 'Kurta Pajama', tag: 'Premium', image: './Kurta pajama.jpg' },
+];
+
+var whyUs = [
+  { icon: 'fa-diamond', title: 'Premium Quality', text: 'Curated fabrics and precise cuts for lasting style.' },
+  { icon: 'fa-bolt', title: 'Trendy Styles', text: 'Energy-packed street and classic fits updated weekly.' },
+  { icon: 'fa-tags', title: 'Affordable Luxury', text: 'Premium vibe without the premium price tag.' },
+  { icon: 'fa-location-dot', title: 'Trusted Store', text: 'Indore-based, community-loved since day one.' },
+];
+
+var statsData = [
+  { icon: 'fa-users', number: 1000, suffix: '+', label: 'Happy Customers' },
+  { icon: 'fa-shirt', number: 50, suffix: '+', label: 'Collections' },
+  { icon: 'fa-star', number: 4.9, suffix: '★', label: 'Customer Rating', isDecimal: true },
+  { icon: 'fa-certificate', number: 100, suffix: '%', label: 'Original Products' },
+];
+
+var testimonials = [
+  { name: 'Rahul Sharma', location: 'Indore', text: 'The quality is unmatched! Every piece I bought from The Vibe Vault feels premium. The fits are perfect and the fabric quality is top-notch.', rating: 5, initial: 'R' },
+  { name: 'Arjun Patel', location: 'Rau', text: 'Best clothing store in Indore hands down. The collection is always fresh and trendy. Their customer service is exceptional too!', rating: 5, initial: 'A' },
+  { name: 'Vikram Singh', location: 'Indore', text: 'I love how they combine street style with elegance. Got compliments every time I wear their outfits. Highly recommended!', rating: 5, initial: 'V' },
+];
+
+var navLinks = [
+  { href: '#home', label: 'Home' },
+  { href: '#categories', label: 'Categories' },
+  { href: '#featured', label: 'Collections' },
+  { href: '#about', label: 'About' },
+  { href: '#contact', label: 'Contact' },
+];
+
+var chatResponses = {
+  "👕 Men's Collection": "🔥 Check out our latest men's collection!\n\n• T-Shirts from ₹499\n• Jeans from ₹1,099\n• Hoodies from ₹1,199\n• Blazers from ₹2,999\n\nScroll up to browse all categories or visit us at Station Road, Rau!",
+  "👗 Women's Collection": "🌸 Currently, we specialize exclusively in Premium Men's Streetwear, Tailored Fits, and Traditional Wear. Women's collections are in the pipeline for future drops!\n\nBrowse our men's collection or DM us for customization options!",
+  "🔥 Trending": "📈 Top trending items right now:\n\n1. Pant & Shirt Combos\n2. T-Shirt + Jeans with Jacket\n3. Cargo Pants\n4. Street Hoodies\n\nDM us on Instagram for quick orders!",
+  "💬 Contact Support": "📞 Reach us:\n\nCall/WhatsApp: 9691676366\nInstagram: @_the_vibe_vault01\nLocation: Station Road, Rau, Indore\n\nStore Hours: 10 AM - 9 PM (All Days)",
+  "📦 Shipping": "🚚 Delivery Info:\n\n• Local (Indore): Same-day delivery available\n• Pan India: 3-7 business days\n• Free shipping on orders above ₹1,500\n• Cash on Delivery available\n\nTrack your order via WhatsApp!",
+  "💳 Payment": "💰 Payment Options:\n\n• Cash on Delivery\n• UPI (GPay, PhonePe, Paytm)\n• Credit/Debit Cards\n• Net Banking\n• Store payment (Cash/UPI)\n\nAll transactions are 100% secure!",
+  "📍 Store Location": "📍 The Vibe Vault\n\nInfront of Paliwal Clinic,\nStation Road, Rau, Indore\nMadhya Pradesh\n\n🕐 Hours: 10 AM - 9 PM\n📞 Call: 9691676366\n\nWe're easy to find — right on Station Road!",
+  "📏 Size Guide": "📏 Size Guide:\n\nS: Chest 36\" | Waist 30\"\nM: Chest 38\" | Waist 32\"\nL: Chest 40\" | Waist 34\"\nXL: Chest 42\" | Waist 36\"\nXXL: Chest 44\" | Waist 38\"\n\nNot sure? WhatsApp us your measurements!",
+  "🔄 Returns": "🔄 Return Policy:\n\n• 7-day easy exchange/return policy.\n• Product must be unused with tags attached.\n• Exchange available for all items.\n• Contact us on WhatsApp to initiate returns!",
+};
+
+// ==================== HOOKS ====================
+var useScrollReveal = function() {
+  var ref = useRef(null);
+  var _s = useState(false), isVisible = _s[0], setVisible = _s[1];
+  useEffect(function() {
+    var el = ref.current;
+    if (!el) return;
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) { setVisible(true); obs.unobserve(entry.target); }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    obs.observe(el);
+    return function() { if (el) obs.unobserve(el); };
+  }, []);
+  return { ref: ref, isVisible: isVisible };
+};
+
+var useCountUp = function(end, duration, isDecimal) {
+  var _s = useState(0), count = _s[0], setCount = _s[1];
+  var ref = useRef(null);
+  var started = useRef(false);
+  useEffect(function() {
+    var el = ref.current;
+    if (!el) return;
+    var obs = new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting && !started.current) {
+        started.current = true;
+        var startTime = null;
+        var step = function(timestamp) {
+          if (!startTime) startTime = timestamp;
+          var progress = Math.min((timestamp - startTime) / (duration || 2000), 1);
+          var eased = 1 - Math.pow(1 - progress, 3);
+          var val = eased * end;
+          setCount(isDecimal ? Math.round(val * 10) / 10 : Math.floor(val));
+          if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+        obs.unobserve(el);
+      }
+    }, { threshold: 0.2 });
+    obs.observe(el);
+    return function() { if (el) obs.unobserve(el); };
+  }, [end]);
+  return { ref: ref, count: count };
+};
+
+// ==================== COMPONENTS ====================
+
+// Ripple Button (with Magnetic compatibility)
+var RippleButton = function(props) {
+  var children = props.children, cls = props.className || '', as = props.as || 'button', href = props.href;
+  var _s = useState([]), ripples = _s[0], setRipples = _s[1];
+  var handleClick = function(ev) {
+    var rect = ev.currentTarget.getBoundingClientRect();
+    var size = Math.max(rect.width, rect.height);
+    var rip = { x: ev.clientX - rect.left - size/2, y: ev.clientY - rect.top - size/2, size: size, id: Date.now() };
+    setRipples(function(p) { return p.concat([rip]); });
+    setTimeout(function() { setRipples(function(p) { return p.slice(1); }); }, 500);
+    if (props.onClick) props.onClick(ev);
+  };
+  var Tag = as === 'a' ? 'a' : 'button';
+  var p2 = { className: cls + ' btn magnetic-btn', onClick: handleClick };
+  if (href) p2.href = href;
+  if (props.target) p2.target = props.target;
+  if (props.rel) p2.rel = props.rel;
+  if (props.style) p2.style = props.style;
+  return e(Tag, p2, children, ripples.map(function(r) {
+    return e('span', { key: r.id, className: 'ripple', style: { width: r.size, height: r.size, top: r.y, left: r.x } });
+  }));
+};
+
+// Quick View Modal
+var QuickViewModal = function(props) {
+  var product = props.product, onClose = props.onClose;
+  var _sz = useState('M'), activeSize = _sz[0], setActiveSize = _sz[1];
+  if (!product) return null;
+
+  var waMessage = "Hi! I am interested in ordering the " + product.name + " (Size: " + activeSize + ") from The Vibe Vault.";
+  var waLink = "https://wa.me/9691676366?text=" + encodeURIComponent(waMessage);
+
+  return e('div', { className: 'modal-backdrop', onClick: onClose, style: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(8px)', zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.3s ease' } },
+    e('div', { className: 'modal-container', onClick: function(ev) { ev.stopPropagation(); }, style: { background: 'var(--bg-card-solid)', border: '1px solid var(--glass-border)', borderRadius: 'var(--radius-lg)', width: 'min(700px, 90vw)', maxHeight: '90vh', overflowY: 'auto', padding: '30px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px', position: 'relative', boxShadow: 'var(--shadow-lg)' } },
+      e('button', { className: 'modal-close', onClick: onClose, style: { position: 'absolute', top: '15px', right: '15px', width: '36px', height: '36px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', color: 'var(--text)', fontSize: '18px', display: 'grid', placeItems: 'center', border: 'none', transition: 'all 0.3s' } }, e('i', { className: 'fa-solid fa-xmark' })),
+      e('div', { className: 'modal-image-wrapper', style: { height: '320px', borderRadius: 'var(--radius)', overflow: 'hidden', border: '1px solid var(--glass-border)' } },
+        e('img', { src: product.image, alt: product.name, style: { width: '100%', height: '100%', objectFit: 'cover' } })
+      ),
+      e('div', { className: 'modal-details', style: { display: 'flex', flexDirection: 'column', gap: '15px', justifyContent: 'center' } },
+        e('div', { className: 'pill', style: { width: 'fit-content' } }, product.category),
+        e('h3', { style: { fontSize: '22px', fontWeight: '800', fontFamily: 'var(--font-heading)' } }, product.name),
+        e('div', { style: { fontSize: '20px', fontWeight: '800', color: 'var(--accent)' } }, product.price),
+        e('p', { style: { color: 'var(--text-dim)', fontSize: '13px', lineHeight: '1.6' } }, product.desc || 'Clean design, premium threads, curated Indore energy. An absolute wardrobe essential.'),
+        e('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
+          e('span', { style: { fontSize: '11px', textTransform: 'uppercase', letterSpacing: '1px', color: 'var(--muted)', fontWeight: '600' } }, 'Select Size'),
+          e('div', { style: { display: 'flex', gap: '8px' } },
+            ['S', 'M', 'L', 'XL', 'XXL'].map(function(s) {
+              return e('button', {
+                key: s,
+                onClick: function() { setActiveSize(s); },
+                style: {
+                  width: '38px',
+                  height: '38px',
+                  borderRadius: '8px',
+                  border: '1px solid ' + (activeSize === s ? 'var(--accent)' : 'var(--glass-border)'),
+                  background: activeSize === s ? 'var(--accent-soft)' : 'transparent',
+                  color: activeSize === s ? 'var(--accent)' : 'var(--text)',
+                  fontWeight: '700',
+                  fontSize: '12px',
+                  transition: 'all 0.3s'
+                }
+              }, s);
+            })
+          )
+        ),
+        e(RippleButton, { className: 'btn-primary', as: 'a', href: waLink, target: '_blank', style: { marginTop: '10px', width: '100%', justifyContent: 'center' } },
+          e('i', { className: 'fa-brands fa-whatsapp' }), ' Order via WhatsApp'
+        )
+      )
+    )
+  );
+};
+
+// Navbar
+var Navbar = function(props) {
+  var theme = props.theme, toggle = props.onToggleTheme, sq = props.searchQuery, setSq = props.setSearchQuery, onSearch = props.onSearch;
+  var _s1 = useState(false), open = _s1[0], setOpen = _s1[1];
+  var _s2 = useState(false), scrolled = _s2[0], setScrolled = _s2[1];
+  var _s3 = useState('home'), active = _s3[0], setActive = _s3[1];
+
+  useEffect(function() {
+    var onScroll = function() { setScrolled(window.scrollY > 50); };
+    window.addEventListener('scroll', onScroll);
+    return function() { window.removeEventListener('scroll', onScroll); };
+  }, []);
+
+  useEffect(function() {
+    var sectionIds = ['home','categories','featured','about','contact'];
+    var onScroll = function() {
+      var scrollPos = window.scrollY + 200;
+      for (var i = sectionIds.length - 1; i >= 0; i--) {
+        var el = document.getElementById(sectionIds[i]);
+        if (el && el.offsetTop <= scrollPos) { setActive(sectionIds[i]); break; }
+      }
+    };
+    window.addEventListener('scroll', onScroll);
+    return function() { window.removeEventListener('scroll', onScroll); };
+  }, []);
+
+  var close = function() { setOpen(false); };
+
+  return e('nav', { className: 'navbar' + (scrolled ? ' scrolled' : '') },
+    e('div', { className: 'container nav-inner' },
+      e('a', { href: '#home', className: 'brand', onClick: close },
+        e('img', { className: 'brand-logo', src: logoSrc, alt: 'The Vibe Vault', loading: 'lazy' }),
+        e('div', { className: 'brand-mark' }, 'VV'),
+        e('div', { className: 'brand-text' }, e('div', null, 'THE VIBE'), e('div', null, 'VAULT'))
+      ),
+      e('div', { className: 'nav-links' + (open ? ' mobile-open' : '') },
+        navLinks.map(function(l, i) {
+          return e('a', {
+            key: l.href,
+            href: l.href,
+            onClick: close,
+            className: 'nav-link' + (active === l.href.slice(1) ? ' active' : ''),
+            style: open ? { animation: 'chatMsgIn 0.3s ease forwards ' + (i * 0.08) + 's', opacity: 0 } : {}
+          }, l.label);
+        })
+      ),
+      e('div', { className: 'search-bar' },
+        e('input', { type: 'text', placeholder: 'Search products...', value: sq, onChange: function(ev) { setSq(ev.target.value); }, onKeyDown: function(ev) { if (ev.key === 'Enter') onSearch(); } }),
+        e('button', { type: 'button', onClick: onSearch, 'aria-label': 'Search' }, e('i', { className: 'fa-solid fa-search' }))
+      ),
+      e('div', { className: 'nav-actions' },
+        e('a', { className: 'nav-cta magnetic-btn', href: '#categories' }, e('i', { className: 'fa-solid fa-bag-shopping' }), ' Shop'),
+        e('button', { className: 'theme-toggle-btn magnetic-btn', type: 'button', onClick: toggle, 'aria-label': 'Toggle theme' },
+          e('div', { className: 'toggle-circle' }, e('i', { className: 'fa-solid fa-' + (theme === 'light' ? 'moon' : 'sun') }))
+        ),
+        e('a', { className: 'icon-btn magnetic-btn', href: 'https://www.instagram.com/_the_vibe_vault01?igsh=dzd3YXhiMnR3NmJy', target: '_blank', rel: 'noreferrer', 'aria-label': 'Instagram' },
+          e('i', { className: 'fa-brands fa-instagram' })
+        ),
+        e('button', { className: 'hamburger' + (open ? ' active' : ''), type: 'button', onClick: function() { setOpen(function(v) { return !v; }); }, 'aria-label': 'Menu' },
+          e('span'), e('span'), e('span')
+        )
+      )
+    ),
+    open && e('div', { className: 'mobile-menu-overlay', onClick: close })
+  );
+};
+
+// Hero
+var Hero = function() {
+  var _mp = useState({ x: 0, y: 0 }), mousePos = _mp[0], setMousePos = _mp[1];
+  var _typed = useState(''), typedText = _typed[0], setTypedText = _typed[1];
+  var phrases = ['Streetwear Energy', 'Tailored Modern Fits', 'Premium Indore Quality', 'Bold Wardrobe Drops'];
+
+  useEffect(function() {
+    var pi = 0, ci = 0, deleting = false;
+    var type = function() {
+      var phrase = phrases[pi];
+      if (!deleting) {
+        ci++;
+        setTypedText(phrase.substring(0, ci));
+        if (ci === phrase.length) { deleting = true; setTimeout(type, 2000); return; }
+        setTimeout(type, 70);
+      } else {
+        ci--;
+        setTypedText(phrase.substring(0, ci));
+        if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(type, 500); return; }
+        setTimeout(type, 35);
+      }
+    };
+    setTimeout(type, 1500);
+  }, []);
+
+  var handleMouse = function(ev) {
+    var rect = ev.currentTarget.getBoundingClientRect();
+    setMousePos({ x: (ev.clientX - rect.left) / rect.width - 0.5, y: (ev.clientY - rect.top) / rect.height - 0.5 });
+  };
+
+  return e('header', { id: 'home', className: 'hero', onMouseMove: handleMouse },
+    e('div', { className: 'hero-bg-shapes' },
+      e('div', { className: 'hero-shape hero-shape-1' }),
+      e('div', { className: 'hero-shape hero-shape-2' }),
+      e('div', { className: 'hero-shape hero-shape-3' })
+    ),
+    e('div', { className: 'container hero-grid' },
+      e('div', { className: 'hero-copy' },
+        e('div', { className: 'hero-badge' }, e('span', { className: 'dot' }), 'New drop live 2025'),
+        e('h1', { className: 'hero-title' },
+          e('span', { className: 'word' }, 'THE '),
+          e('span', { className: 'word accent-gradient' }, 'VIBE '),
+          e('span', { className: 'word' }, 'VAULT')
+        ),
+        e('div', { className: 'hero-subtitle' }, typedText, e('span', { className: 'typed-cursor' }, '|')),
+        e('p', { className: 'hero-tagline' }, "Premium men's fits curated in Indore. Bold streetwear, tailored layers, and everyday essentials built to keep your vibe high."),
+        e('div', { className: 'cta-row' },
+          e(RippleButton, { className: 'btn-primary magnetic-btn', as: 'a', href: '#categories' },
+            e('i', { className: 'fa-solid fa-arrow-right-long btn-arrow' }), ' Explore Collections'
+          ),
+          e(RippleButton, { className: 'btn-outline magnetic-btn', as: 'a', href: '#featured' },
+            e('i', { className: 'fa-solid fa-star' }), ' Best Sellers'
+          )
+        )
+      ),
+      e('div', { className: 'hero-card', style: { transform: 'perspective(1000px) rotateX(' + mousePos.y * 8 + 'deg) rotateY(' + -mousePos.x * 8 + 'deg)', transition: 'transform 0.15s ease-out' } },
+        e('img', { className: 'hero-logo', src: logoSrc, alt: 'The Vibe Vault', loading: 'lazy' }),
+        e('div', { className: 'logo-mark' }, e('div', { className: 'hoodie-icon' }, 'VV'), e('span', null, 'THE VIBE VAULT')),
+        e('div', { className: 'hero-stats' },
+          e('div', { className: 'stat' }, e('h3', null, 'New Drop'), e('p', null, 'Street + Tailored')),
+          e('div', { className: 'stat' }, e('h3', null, 'Indore'), e('p', null, 'Station Road, Rau')),
+          e('div', { className: 'stat' }, e('h3', null, 'DM'), e('p', null, 'Instagram orders'))
+        )
+      )
+    ),
+    
+    // Floating clothing images matching CSS styles
+    e('div', { className: 'hero-floating hero-floating-1', style: { transform: 'rotate(8deg) translateY(' + (mousePos.y * -20) + 'px)' } },
+      e('img', { src: './Jackets.jpg', alt: 'Premium jacket style' })
+    ),
+    e('div', { className: 'hero-floating hero-floating-2', style: { transform: 'rotate(-5deg) translateY(' + (mousePos.y * 20) + 'px)' } },
+      e('img', { src: './cargo pants.webp', alt: 'Premium cargo style' })
+    ),
+
+    e('div', { className: 'scroll-indicator' },
+      e('span', null, 'Scroll'),
+      e('div', { className: 'scroll-line' })
+    )
+  );
+};
+
+// Product Card
+var ProductCard = function(props) {
+  var sr = useScrollReveal();
+  var _liked = useState(false), liked = _liked[0], setLiked = _liked[1];
+
+  var handleQuickViewClick = function(ev) {
+    ev.stopPropagation();
+    if (props.onQuickView) {
+      props.onQuickView(props);
+    }
+  };
+
+  return e('div', { className: 'card' + (sr.isVisible ? ' visible' : ''), ref: sr.ref },
+    e('div', { className: 'card-image-wrapper' },
+      e('img', { src: props.image, alt: props.name, loading: 'lazy' }),
+      e('div', { className: 'card-overlay' }),
+      e('button', { className: 'card-wishlist' + (liked ? ' liked' : ''), onClick: function(ev) { ev.stopPropagation(); setLiked(function(v) { return !v; }); }, 'aria-label': 'Wishlist' },
+        e('i', { className: (liked ? 'fa-solid' : 'fa-regular') + ' fa-heart' })
+      ),
+      e('button', { className: 'card-quickview', onClick: handleQuickViewClick }, 'Quick View')
+    ),
+    e('div', { className: 'card-body' },
+      e('div', { className: 'card-title' }, props.name),
+      e('div', { className: 'card-price' }, props.price),
+      e('div', { className: 'chip' }, e('i', { className: 'fa-solid fa-shirt' }), ' ', props.category),
+      e('button', { className: 'view-btn', onClick: handleQuickViewClick }, e('span', null, 'View Details'), e('i', { className: 'fa-solid fa-arrow-right' }))
+    )
+  );
+};
+
+// Categories
+var Categories = function(props) {
+  var sr = useScrollReveal();
+  var q = (props.searchQuery || '').trim().toLowerCase();
+  var filtered = q ? products.filter(function(p) { return p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q); }) : products;
+
+  return e('section', { id: 'categories', className: 'reveal-up', ref: sr.ref },
+    e('div', { className: 'container' },
+      e('div', { className: 'section-head' },
+        e('div', null,
+          e('div', { className: 'pill' }, e('i', { className: 'fa-solid fa-grip' }), ' Categories'),
+          e('h2', { className: 'section-title' }, 'Built for every vibe'),
+          e('p', { className: 'section-sub' }, 'Street staples, refined classics, layered essentials — all under one roof.')
+        ),
+        e(RippleButton, { className: 'btn-outline magnetic-btn', as: 'a', href: '#contact' }, 'Visit Store')
+      ),
+      filtered.length === 0
+        ? e('p', { className: 'no-results' }, 'No products found for "', props.searchQuery, '"')
+        : e('div', { className: 'grid' }, filtered.map(function(p) { 
+            return e(ProductCard, { 
+              key: p.name, 
+              name: p.name, 
+              category: p.category, 
+              image: p.image, 
+              price: p.price,
+              desc: p.desc,
+              onQuickView: props.onQuickView
+            }); 
+          }))
+    ),
+    e('hr', { className: 'section-divider' })
+  );
+};
+
+// Gallery
+var Gallery = function() {
+  var sr = useScrollReveal();
+  var imgs = [
+    { src: './Pant & Shirt Combination.jpg', label: 'Pant & Shirt' },
+    { src: './Sweaters.jpg', label: 'Sweaters' },
+    { src: './Sweatshirts.webp', label: 'Sweatshirts' },
+    { src: './T-Shirt, Jeans with Jacket.jpg', label: 'Jacket Look' },
+    { src: './Kurta pajama.jpg', label: 'Traditional' },
+  ];
+
+  return e('section', { id: 'gallery', ref: sr.ref },
+    e('div', { className: 'container' },
+      e('div', { className: 'section-head' },
+        e('div', null,
+          e('div', { className: 'pill' }, e('i', { className: 'fa-solid fa-images' }), ' Lookbook'),
+          e('h2', { className: 'section-title' }, 'Style inspiration'),
+          e('p', { className: 'section-sub' }, 'Curated looks to elevate your everyday wardrobe.')
+        )
+      ),
+      e('div', { className: 'gallery-grid' },
+        imgs.map(function(img, i) {
+          return e('div', { className: 'gallery-item', key: i },
+            e('img', { src: img.src, alt: img.label, loading: 'lazy' }),
+            e('div', { className: 'gallery-overlay' },
+              e('span', null, e('i', { className: 'fa-solid fa-arrow-up-right-from-square' }), ' ', img.label)
+            )
+          );
+        })
+      )
+    )
+  );
+};
+
+// Featured (Swiper)
+var Featured = function() {
+  var sr = useScrollReveal();
+  var swiperInit = useRef(false);
+
+  useEffect(function() {
+    if (swiperInit.current) return;
+    swiperInit.current = true;
+    setTimeout(function() {
+      if (typeof Swiper !== 'undefined') {
+        new Swiper('.swiper-featured', {
+          effect: 'coverflow',
+          grabCursor: true,
+          centeredSlides: true,
+          slidesPerView: 'auto',
+          coverflowEffect: { rotate: 5, stretch: 0, depth: 100, modifier: 2.5, slideShadows: false },
+          autoplay: { delay: 3500, disableOnInteraction: false, pauseOnMouseEnter: true },
+          loop: true,
+          pagination: { el: '.swiper-featured .swiper-pagination', clickable: true },
+          navigation: { nextEl: '.swiper-featured .swiper-button-next', prevEl: '.swiper-featured .swiper-button-prev' },
+          breakpoints: { 320: { slidesPerView: 1.2 }, 640: { slidesPerView: 1.8 }, 1024: { slidesPerView: 2.5 } }
+        });
+      }
+    }, 300);
+  }, []);
+
+  return e('section', { id: 'featured', ref: sr.ref },
+    e('div', { className: 'container' },
+      e('div', { className: 'section-head' },
+        e('div', null,
+          e('div', { className: 'pill' }, e('i', { className: 'fa-solid fa-fire' }), ' Featured'),
+          e('h2', { className: 'section-title' }, 'Curated collections'),
+          e('p', { className: 'section-sub' }, 'Trending picks and best sellers from The Vibe Vault.')
+        )
+      ),
+      e('div', { className: 'swiper swiper-featured' },
+        e('div', { className: 'swiper-wrapper' },
+          featuredItems.concat(featuredItems).map(function(item, idx) {
+            return e('div', { className: 'swiper-slide', key: idx },
+              e('span', { className: 'badge' }, item.tag),
+              e('img', { src: item.image, alt: item.title, loading: 'lazy' }),
+              e('div', { className: 'swiper-info' },
+                e('h4', null, item.title),
+                e('i', { className: 'fa-solid fa-arrow-right', style: { color: 'var(--accent)' } })
+              )
+            );
+          })
+        ),
+        e('div', { className: 'swiper-pagination' }),
+        e('div', { className: 'swiper-button-prev' }),
+        e('div', { className: 'swiper-button-next' })
+      )
+    )
+  );
+};
+
+// Statistics
+var Statistics = function() {
+  return e('section', { id: 'stats' },
+    e('div', { className: 'container' },
+      e('div', { className: 'stats-grid' },
+        statsData.map(function(s, i) {
+          var cu = useCountUp(s.number, 2200, s.isDecimal);
+          return e('div', { className: 'stat-card', key: i, ref: cu.ref },
+            e('div', { className: 'stat-icon' }, e('i', { className: 'fa-solid ' + s.icon })),
+            e('div', { className: 'stat-number' }, cu.count, e('span', { className: 'accent' }, s.suffix)),
+            e('div', { className: 'stat-label' }, s.label)
+          );
+        })
+      )
+    )
+  );
+};
+
+// Why Choose Us
+var WhyChoose = function() {
+  var sr = useScrollReveal();
+  return e('section', { ref: sr.ref },
+    e('div', { className: 'container' },
+      e('div', { className: 'section-head' },
+        e('div', null,
+          e('div', { className: 'pill' }, e('i', { className: 'fa-solid fa-crown' }), ' Why Us'),
+          e('h2', { className: 'section-title' }, 'Dress with energy'),
+          e('p', { className: 'section-sub' }, 'Every piece is curated to make you look and feel premium.')
+        )
+      ),
+      e('div', { className: 'features' },
+        whyUs.map(function(item, idx) {
+          return e('div', { className: 'feature', key: item.title },
+            e('div', { className: 'feature-icon' }, e('i', { className: 'fa-solid ' + item.icon })),
+            e('strong', null, item.title),
+            e('p', { className: 'section-sub' }, item.text)
+          );
+        })
+      )
+    )
+  );
+};
+
+// About
+var About = function() {
+  var sr = useScrollReveal();
+  return e('section', { id: 'about', ref: sr.ref },
+    e('div', { className: 'container' },
+      e('div', { className: 'section-head' },
+        e('div', null,
+          e('div', { className: 'pill' }, e('i', { className: 'fa-solid fa-info-circle' }), ' About Us'),
+          e('h2', { className: 'section-title' }, 'Fashion meets energy')
+        )
+      ),
+      e('div', { className: 'about-content' },
+        e('div', { className: 'about-text' },
+          e('p', null, "The Vibe Vault is Indore's premium destination for men's fashion. We blend street-ready silhouettes with elevated tailoring so you can carry energy from day to night."),
+          e('br'),
+          e('p', null, "Every drop is curated to keep your look sharp, confident, and authentically you. From casual tees to formal blazers — we've got your entire wardrobe covered with style that speaks.")
+        ),
+        e('div', { className: 'about-image' },
+          e('img', { src: './Pant & Shirt Combination.jpg', alt: 'The Vibe Vault Style', loading: 'lazy' })
+        )
+      )
+    )
+  );
+};
+
+// Testimonials
+var Testimonials = function() {
+  var sr = useScrollReveal();
+  var swiperInit = useRef(false);
+
+  useEffect(function() {
+    if (swiperInit.current) return;
+    swiperInit.current = true;
+    setTimeout(function() {
+      if (typeof Swiper !== 'undefined') {
+        new Swiper('.swiper-testimonials', {
+          slidesPerView: 1,
+          spaceBetween: 24,
+          autoplay: { delay: 4000, disableOnInteraction: false },
+          loop: true,
+          pagination: { el: '.swiper-testimonials .swiper-pagination', clickable: true },
+          breakpoints: { 640: { slidesPerView: 2 }, 1024: { slidesPerView: 3 } }
+        });
+      }
+    }, 500);
+  }, []);
+
+  return e('section', { id: 'testimonials', ref: sr.ref },
+    e('div', { className: 'container' },
+      e('div', { className: 'section-head' },
+        e('div', null,
+          e('div', { className: 'pill' }, e('i', { className: 'fa-solid fa-quote-left' }), ' Reviews'),
+          e('h2', { className: 'section-title' }, 'What our customers say'),
+          e('p', { className: 'section-sub' }, 'Real reviews from real customers who love The Vibe Vault.')
+        )
+      ),
+      e('div', { className: 'swiper swiper-testimonials' },
+        e('div', { className: 'swiper-wrapper' },
+          testimonials.concat(testimonials).map(function(t, i) {
+            return e('div', { className: 'swiper-slide', key: i },
+              e('div', { className: 'testimonial-card' },
+                e('div', { className: 'testimonial-stars' },
+                  Array(t.rating).fill(0).map(function(_, j) { return e('i', { className: 'fa-solid fa-star', key: j }); })
+                ),
+                e('p', { className: 'testimonial-text' }, '"', t.text, '"'),
+                e('div', { className: 'testimonial-author' },
+                  e('div', { className: 'testimonial-avatar' }, t.initial),
+                  e('div', { className: 'testimonial-info' },
+                    e('strong', null, t.name),
+                    e('span', null, e('i', { className: 'fa-solid fa-location-dot' }), ' ', t.location)
+                  )
+                )
+              )
+            );
+          })
+        ),
+        e('div', { className: 'swiper-pagination' })
+      )
+    )
+  );
+};
+
+// Newsletter + WhatsApp CTA
+var Newsletter = function() {
+  var sr = useScrollReveal();
+  return e('section', { className: 'newsletter-section', ref: sr.ref },
+    e('div', { className: 'container' },
+      e('div', { className: 'newsletter-content' },
+        e('div', { className: 'pill' }, e('i', { className: 'fa-solid fa-envelope' }), ' Stay Updated'),
+        e('h2', { className: 'section-title' }, 'Join 1000+ fashion lovers'),
+        e('p', { className: 'section-sub', style: { margin: '12px auto 0', maxWidth: '450px' } }, 'Get notified about new drops, exclusive deals, and style tips.'),
+        e('div', { className: 'newsletter-form' },
+          e('input', { type: 'email', placeholder: 'Enter your email...' }),
+          e(RippleButton, { className: 'btn-primary magnetic-btn' }, 'Subscribe')
+        ),
+        e('div', { className: 'newsletter-divider' }, 'or'),
+        e('a', { className: 'whatsapp-cta magnetic-btn', href: 'https://whatsapp.com/channel/0029VbB0SGQ1XquO75QEyQ2B', target: '_blank', rel: 'noreferrer' },
+          e('i', { className: 'fa-brands fa-whatsapp' }), 'Join WhatsApp Channel'
+        )
+      )
+    )
+  );
+};
+
+// Contact
+var Contact = function() {
+  var sr = useScrollReveal();
+  return e('section', { id: 'contact', ref: sr.ref },
+    e('div', { className: 'container' },
+      e('div', { className: 'section-head' },
+        e('div', null,
+          e('div', { className: 'pill' }, e('i', { className: 'fa-solid fa-paper-plane' }), ' Contact'),
+          e('h2', { className: 'section-title' }, "Let's connect")
+        )
+      ),
+      e('div', { className: 'contact-grid' },
+        e('div', { className: 'contact-card' },
+          e('h3', null, 'Visit Our Store'),
+          e('div', { className: 'contact-info-item' },
+            e('i', { className: 'fa-solid fa-location-dot' }),
+            e('p', null, 'Infront of Paliwal Clinic, Station Road, Rau, Indore')
+          ),
+          e('div', { className: 'contact-info-item' },
+            e('i', { className: 'fa-solid fa-phone' }),
+            e('p', null, e('a', { href: 'tel:9691676366' }, '9691676366'))
+          ),
+          e('div', { className: 'contact-info-item' },
+            e('i', { className: 'fa-solid fa-clock' }),
+            e('p', null, '10:00 AM - 9:00 PM (All Days)')
+          ),
+          e('div', { style: { display: 'flex', gap: '10px', marginTop: '16px' } },
+            e(RippleButton, { className: 'btn-outline magnetic-btn', as: 'a', href: 'https://www.instagram.com/_the_vibe_vault01?igsh=dzd3YXhiMnR3NmJy', target: '_blank', rel: 'noreferrer' },
+              e('i', { className: 'fa-brands fa-instagram' }), ' Instagram'
+            ),
+            e(RippleButton, { className: 'btn-outline magnetic-btn', as: 'a', href: 'https://whatsapp.com/channel/0029VbB0SGQ1XquO75QEyQ2B', target: '_blank', rel: 'noreferrer' },
+              e('i', { className: 'fa-brands fa-whatsapp' }), ' WhatsApp'
+            )
+          )
+        ),
+        e('div', { className: 'map' },
+          e('iframe', { title: 'The Vibe Vault Map', src: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14736.423704329823!2d75.813!3d22.626!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3963033ee6afa807%3A0x4da2f805dcc31d22!2sRau%2C%20Indore%2C%20Madhya%20Pradesh!5e0!3m2!1sen!2sin!4v0000000000', width: '100%', height: '100%', style: { border: 0 }, allowFullScreen: '', loading: 'lazy', referrerPolicy: 'no-referrer-when-downgrade' })
+        )
+      )
+    )
+  );
+};
+
+// Premium Footer
+var Footer = function() {
+  return e('footer', null,
+    e('div', { className: 'container' },
+      e('div', { className: 'footer-grid' },
+        e('div', { className: 'footer-brand' },
+          e('div', { className: 'footer-brand-logo' },
+            e('img', { src: logoSrc, alt: 'VV' }), 'THE VIBE VAULT'
+          ),
+          e('p', null, "Indore's premium destination for men's fashion. Bold streetwear meets elevated tailoring."),
+          e('div', { className: 'footer-social' },
+            e('a', { href: 'https://www.instagram.com/_the_vibe_vault01?igsh=dzd3YXhiMnR3NmJy', target: '_blank', rel: 'noreferrer', 'aria-label': 'Instagram' }, e('i', { className: 'fa-brands fa-instagram' })),
+            e('a', { href: 'https://whatsapp.com/channel/0029VbB0SGQ1XquO75QEyQ2B', target: '_blank', rel: 'noreferrer', 'aria-label': 'WhatsApp' }, e('i', { className: 'fa-brands fa-whatsapp' })),
+            e('a', { href: 'tel:9691676366', 'aria-label': 'Phone' }, e('i', { className: 'fa-solid fa-phone' }))
+          )
+        ),
+        e('div', { className: 'footer-col' },
+          e('h4', null, 'Quick Links'),
+          e('ul', null,
+            ['Home', 'Categories', 'Collections', 'About', 'Contact'].map(function(l) {
+              return e('li', { key: l }, e('a', { href: '#' + l.toLowerCase() }, l));
+            })
+          )
+        ),
+        e('div', { className: 'footer-col' },
+          e('h4', null, 'Help'),
+          e('ul', null,
+            ['Size Guide', 'Shipping Info', 'Returns', 'Payment Options', 'Store Hours'].map(function(l) {
+              return e('li', { key: l }, e('a', { href: '#contact' }, l));
+            })
+          )
+        ),
+        e('div', { className: 'footer-col' },
+          e('h4', null, 'Newsletter'),
+          e('p', { style: { color: 'var(--muted)', fontSize: '13px', marginBottom: '12px' } }, 'Get updates on new drops and offers.'),
+          e('div', { className: 'footer-newsletter' },
+            e('input', { type: 'email', placeholder: 'Your email...' }),
+            e(RippleButton, { className: 'btn-primary magnetic-btn', style: { width: '100%', justifyContent: 'center', padding: '12px' } }, 'Subscribe')
+          )
+        )
+      ),
+      e('div', { className: 'footer-bottom' },
+        e('p', null, '\u00A9 2025 The Vibe Vault. All rights reserved.'),
+        e('p', null, 'Built with \u2764\uFE0F by ', e('a', { href: 'https://www.linkedin.com/in/harshdeep-pawar-harshdeep16', target: '_blank', rel: 'noreferrer' }, 'Harshdeep Pawar'))
+      )
+    )
+  );
+};
+
+// WhatsApp Float
+var WhatsAppFloat = function() {
+  return e('div', { className: 'whatsapp-float' },
+    e('div', { className: 'whatsapp-tooltip' }, 'Join The Vibe Vault Community \uD83D\uDE0E'),
+    e('a', { className: 'whatsapp-float-btn', href: 'https://whatsapp.com/channel/0029VbB0SGQ1XquO75QEyQ2B', target: '_blank', rel: 'noreferrer', 'aria-label': 'WhatsApp Channel' },
+      e('i', { className: 'fa-brands fa-whatsapp' })
+    )
+  );
+};
+
+// Chatbot
+var ChatBot = function() {
+  var _open = useState(false), isOpen = _open[0], setOpen = _open[1];
+  var _msgs = useState([{ text: "\uD83D\uDC4B Welcome to The Vibe Vault!\n\nNeed help finding outfits, sizes, offers, or latest collections?\nI'm here to help.", bot: true }]), msgs = _msgs[0], setMsgs = _msgs[1];
+  var _typing = useState(false), typing = _typing[0], setTyping = _typing[1];
+  var msgsEnd = useRef(null);
+
+  useEffect(function() {
+    if (msgsEnd.current) msgsEnd.current.scrollIntoView({ behavior: 'smooth' });
+  }, [msgs, typing]);
+
+  var sendReply = function(label) {
+    setMsgs(function(prev) { return prev.concat([{ text: label, bot: false }]); });
+    setTyping(true);
+    setTimeout(function() {
+      setTyping(false);
+      var resp = chatResponses[label] || "Thanks for your interest! For more details, please visit our store or DM us on Instagram @_the_vibe_vault01";
+      setMsgs(function(prev) { return prev.concat([{ text: resp, bot: true }]); });
+    }, 1000);
+  };
+
+  var quickBtns = [
+    "👕 Men's Collection", 
+    "👗 Women's Collection", 
+    "🔥 Trending", 
+    "💬 Contact Support", 
+    "📦 Shipping", 
+    "💳 Payment", 
+    "📍 Store Location",
+    "📏 Size Guide",
+    "🔄 Returns"
+  ];
+
+  return e(React.Fragment, null,
+    e('button', { className: 'chatbot-trigger', onClick: function() { setOpen(function(v) { return !v; }); }, 'aria-label': 'Chat' },
+      e('i', { className: isOpen ? 'fa-solid fa-xmark' : 'fa-solid fa-comments' })
+    ),
+    e('div', { className: 'chatbot-panel' + (isOpen ? ' open' : '') },
+      e('div', { className: 'chatbot-header' },
+        e('div', { className: 'chatbot-header-info' },
+          e('div', { className: 'chatbot-header-avatar' }, 'VV'),
+          e('div', { className: 'chatbot-header-text' },
+            e('strong', null, 'Vibe Assistant'),
+            e('span', null, 'Online')
+          )
+        ),
+        e('button', { className: 'chatbot-close', onClick: function() { setOpen(false); } }, e('i', { className: 'fa-solid fa-minus' }))
+      ),
+      e('div', { className: 'chatbot-messages' },
+        msgs.map(function(m, i) {
+          return e('div', { className: 'chat-msg ' + (m.bot ? 'bot' : 'user'), key: i, style: { whiteSpace: 'pre-line' } }, m.text);
+        }),
+        typing && e('div', { className: 'chat-typing' }, e('span'), e('span'), e('span')),
+        e('div', { ref: msgsEnd })
+      ),
+      e('div', { className: 'chatbot-quick-replies' },
+        quickBtns.map(function(b) {
+          return e('button', { className: 'quick-reply-btn', key: b, onClick: function() { sendReply(b); } }, b);
+        })
+      )
+    )
+  );
+};
+
+// ==================== MAIN APP ====================
+var App = function() {
+  var _theme = useState(function() {
+    var s = window.localStorage.getItem('vv-theme');
+    return s === 'light' ? 'light' : 'dark';
+  }), theme = _theme[0], setTheme = _theme[1];
+  var _sq = useState(''), sq = _sq[0], setSq = _sq[1];
+  var _qv = useState(null), quickViewProduct = _qv[0], setQuickViewProduct = _qv[1];
+
+  useEffect(function() {
+    document.body.classList.toggle('theme-light', theme === 'light');
+    window.localStorage.setItem('vv-theme', theme);
+  }, [theme]);
+
+  // Magnetic Button Interactions Hook
+  useEffect(function() {
+    if (window.matchMedia('(hover: none)').matches) return;
+    
+    var handleMouseMove = function(ev) {
+      var btn = ev.currentTarget;
+      var rect = btn.getBoundingClientRect();
+      var x = ev.clientX - rect.left - rect.width/2;
+      var y = ev.clientY - rect.top - rect.height/2;
+      
+      gsap.to(btn, {
+        x: x * 0.35,
+        y: y * 0.35,
+        duration: 0.3,
+        ease: 'power2.out'
+      });
+    };
+
+    var handleMouseLeave = function(ev) {
+      var btn = ev.currentTarget;
+      gsap.to(btn, {
+        x: 0,
+        y: 0,
+        duration: 0.5,
+        ease: 'elastic.out(1.1, 0.4)'
+      });
+    };
+
+    var updateListeners = function() {
+      var btns = document.querySelectorAll('.magnetic-btn');
+      btns.forEach(function(btn) {
+        btn.addEventListener('mousemove', handleMouseMove);
+        btn.addEventListener('mouseleave', handleMouseLeave);
+      });
+    };
+
+    // Run immediately and setup MutationObserver to bind dynamically added buttons
+    updateListeners();
+    var observer = new MutationObserver(updateListeners);
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    return function() {
+      observer.disconnect();
+      var btns = document.querySelectorAll('.magnetic-btn');
+      btns.forEach(function(btn) {
+        if (btn) {
+          btn.removeEventListener('mousemove', handleMouseMove);
+          btn.removeEventListener('mouseleave', handleMouseLeave);
+        }
+      });
+    };
+  }, []);
+
+  useEffect(function() {
+    var handler = function(ev) {
+      var t = ev.target;
+      while (t && t.tagName !== 'A') t = t.parentElement;
+      if (t && t.tagName === 'A') {
+        var href = t.getAttribute('href');
+        if (href && href.startsWith('#')) {
+          var el = document.getElementById(href.slice(1));
+          if (el) { ev.preventDefault(); el.scrollIntoView({ behavior: 'smooth' }); }
+        }
+      }
+    };
+    document.addEventListener('click', handler);
+    return function() { document.removeEventListener('click', handler); };
+  }, []);
+
+  return e('div', { className: 'page' },
+    e(Navbar, { theme: theme, onToggleTheme: function() { setTheme(function(p) { return p === 'light' ? 'dark' : 'light'; }); }, searchQuery: sq, setSearchQuery: setSq, onSearch: function() { var el = document.getElementById('categories'); if (el) el.scrollIntoView({ behavior: 'smooth' }); } }),
+    e(Hero),
+    e(Categories, { searchQuery: sq, onQuickView: setQuickViewProduct }),
+    e(Gallery),
+    e(Featured),
+    e(Statistics),
+    e(WhyChoose),
+    e(About),
+    e(Testimonials),
+    e(Newsletter),
+    e(Contact),
+    e(Footer),
+    e(WhatsAppFloat),
+    e(ChatBot),
+    quickViewProduct && e(QuickViewModal, { product: quickViewProduct, onClose: function() { setQuickViewProduct(null); } })
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(e(App));
+
+// ==================== GLOBAL EFFECTS ====================
+
+// Lenis Smooth Scroll
+var lenis;
+(function() {
+  if (typeof Lenis !== 'undefined') {
+    lenis = new Lenis({
+      duration: 1.2,
+      easing: function(t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1.0,
+      smoothTouch: false,
+      touchMultiplier: 2.0,
+      infinite: false,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    if (typeof ScrollTrigger !== 'undefined') {
+      lenis.on('scroll', ScrollTrigger.update);
+    }
+  }
+})();
+
+// Preloader
+(function() {
+  var fill = document.getElementById('preloader-fill');
+  var pct = document.getElementById('preloader-percent');
+  var loader = document.getElementById('preloader');
+  var phrase = document.getElementById('preloader-phrase');
+  var progress = 0;
+  
+  var preloaderPhrases = [
+    "Curating vibes...",
+    "Selecting premium fabrics...",
+    "Stitching streetwear staples...",
+    "Ready to drop..."
+  ];
+
+  var interval = setInterval(function() {
+    progress += Math.random() * 12 + 4;
+    if (progress > 95) progress = 95;
+    if (fill) fill.style.width = progress + '%';
+    if (pct) pct.textContent = Math.floor(progress) + '%';
+    
+    // Rotate phrases based on percentage
+    if (phrase) {
+      var idx = Math.floor((progress / 100) * preloaderPhrases.length);
+      phrase.textContent = preloaderPhrases[idx] || preloaderPhrases[preloaderPhrases.length - 1];
+    }
+  }, 150);
+
+  window.addEventListener('load', function() {
+    clearInterval(interval);
+    if (fill) fill.style.width = '100%';
+    if (pct) pct.textContent = '100%';
+    if (phrase) phrase.textContent = "Welcome to The Vibe Vault";
+    setTimeout(function() {
+      if (loader) loader.classList.add('hidden');
+      document.body.classList.remove('loading');
+    }, 700);
+  });
+})();
+
+// Scroll Progress
+(function() {
+  var bar = document.getElementById('scroll-progress');
+  window.addEventListener('scroll', function() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    if (bar && h > 0) bar.style.width = (window.scrollY / h * 100) + '%';
+  });
+})();
+
+// Custom Cursor with trailing effect
+(function() {
+  var cursor = document.getElementById('cursor-glow');
+  if (!cursor || window.matchMedia('(hover: none)').matches) return;
+  var cx = 0, cy = 0, tx = 0, ty = 0;
+  document.addEventListener('mousemove', function(ev) { tx = ev.clientX; ty = ev.clientY; });
+  (function loop() {
+    cx += (tx - cx) * 0.15;
+    cy += (ty - cy) * 0.15;
+    cursor.style.left = cx + 'px';
+    cursor.style.top = cy + 'px';
+    requestAnimationFrame(loop);
+  })();
+  document.addEventListener('mouseover', function(ev) {
+    var t = ev.target;
+    if (t.closest('.card') || t.closest('.gallery-item') || t.closest('.swiper-slide')) {
+      cursor.classList.add('hovering-view');
+      cursor.innerHTML = '<span class="cursor-text">VIEW</span>';
+    } else if (t.tagName === 'A' || t.tagName === 'BUTTON' || t.closest('a') || t.closest('button') || t.closest('.feature') || t.closest('.stat-card')) {
+      cursor.classList.add('hovering');
+      cursor.innerHTML = '';
+    }
+  });
+  document.addEventListener('mouseout', function(ev) {
+    cursor.classList.remove('hovering');
+    cursor.classList.remove('hovering-view');
+    cursor.innerHTML = '';
+  });
+})();
+
+// Mouse Gradient Follower
+(function() {
+  var grad = document.getElementById('mouse-gradient');
+  if (!grad || window.matchMedia('(hover: none)').matches) return;
+  document.addEventListener('mousemove', function(ev) {
+    grad.style.left = ev.clientX + 'px';
+    grad.style.top = ev.clientY + 'px';
+  });
+})();
+
+// Particle Canvas Connection system
+(function() {
+  var canvas = document.getElementById('particles');
+  if (!canvas || window.matchMedia('(hover: none)').matches) return;
+  var ctx = canvas.getContext('2d');
+  var particles = [];
+  var count = 35;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (var i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      size: Math.random() * 2 + 1.2,
+      opacity: Math.random() * 0.35 + 0.15
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw lines between nearby particles
+    for (var a = 0; a < count; a++) {
+      for (var b = a + 1; b < count; b++) {
+        var dx = particles[a].x - particles[b].x;
+        var dy = particles[a].y - particles[b].y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 100) {
+          ctx.beginPath();
+          ctx.moveTo(particles[a].x, particles[a].y);
+          ctx.lineTo(particles[b].x, particles[b].y);
+          ctx.strokeStyle = 'rgba(201, 169, 97, ' + (0.12 * (1 - dist / 100)) + ')';
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+
+    particles.forEach(function(p) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(201, 169, 97, ' + p.opacity + ')';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// GSAP ScrollTrigger Animations
+(function() {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Stagger reveal sections
+  gsap.utils.toArray('section').forEach(function(section) {
+    gsap.fromTo(section, { opacity: 0, y: 50 }, {
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top 88%',
+        toggleActions: 'play none none none'
+      }
+    });
+  });
+
+  // Stagger headings (split-like character stagger)
+  gsap.utils.toArray('.section-title').forEach(function(title) {
+    gsap.fromTo(title, { opacity: 0, y: 25 }, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: title,
+        start: 'top 92%'
+      }
+    });
+  });
+
+  // Stagger categories/product cards
+  gsap.utils.toArray('.grid').forEach(function(grid) {
+    gsap.fromTo(grid.children, { opacity: 0, y: 40, scale: 0.96 }, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.8,
+      stagger: 0.08,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: grid,
+        start: 'top 85%'
+      }
+    });
+  });
+
+  // Gallery lookbook items parallax
+  gsap.utils.toArray('.gallery-item').forEach(function(item, i) {
+    gsap.fromTo(item, { opacity: 0, scale: 0.94 }, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.8,
+      delay: i * 0.08,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: item,
+        start: 'top 90%'
+      }
+    });
+  });
+
+  // Feature cards stagger
+  gsap.utils.toArray('.features').forEach(function(feats) {
+    gsap.fromTo(feats.children, { opacity: 0, y: 35 }, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: feats,
+        start: 'top 88%'
+      }
+    });
+  });
+
+  // Statistics counters
+  gsap.utils.toArray('.stat-card').forEach(function(card, i) {
+    gsap.fromTo(card, { opacity: 0, scale: 0.9 }, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.65,
+      delay: i * 0.08,
+      ease: 'back.out(1.4)',
+      scrollTrigger: {
+        trigger: card,
+        start: 'top 92%'
+      }
+    });
+  });
+})();
+    </script>
+  </body>
+</html>
