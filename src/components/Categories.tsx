@@ -42,7 +42,7 @@ export default function Categories({ searchQuery, onQuickView }: CategoriesProps
   });
 
   return (
-    <section id="categories" className="py-24 relative select-none">
+    <section id="categories" className="py-24 relative select-none section-bg-warm">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
@@ -100,7 +100,7 @@ export default function Categories({ searchQuery, onQuickView }: CategoriesProps
           </div>
         )}
       </div>
-      <hr className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/10 to-transparent border-none" />
+      <hr className="absolute bottom-0 left-0 w-full h-[1px] divider-gold border-none" />
     </section>
   );
 }

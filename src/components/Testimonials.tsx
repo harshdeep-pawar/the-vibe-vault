@@ -33,7 +33,7 @@ export default function Testimonials() {
   ];
 
   return (
-    <section id="testimonials" className="py-24 relative select-none">
+    <section id="testimonials" className="py-24 relative select-none section-bg-rose">
       <div className="container mx-auto px-6">
         <div className="flex flex-col items-center text-center mb-16">
           <div className="pill inline-flex items-center gap-2 px-4 py-1.5 bg-gold/10 border border-gold/20 rounded-full text-gold font-heading text-[10px] font-bold tracking-[1.5px] uppercase mb-4">
@@ -100,7 +100,7 @@ export default function Testimonials() {
           </Swiper>
         </div>
       </div>
-      <hr className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-gold/10 to-transparent border-none" />
+      <hr className="absolute bottom-0 left-0 w-full h-[1px] divider-rose border-none" />
     </section>
   );
 }

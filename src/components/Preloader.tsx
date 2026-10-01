@@ -49,8 +49,8 @@ export default function Preloader() {
   return (
     <div
       id="preloader"
-      className={`fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-[#050505] transition-all duration-800 cubic-bezier(0.16, 1, 0.3, 1) ${
-        progress === 100 ? "opacity-0 invisible scale-[1.05]" : "opacity-100 visible scale-100"
+      className={`fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-[#050505] ${
+        progress === 100 ? "preloader-exit" : "preloader-visible"
       }`}
     >
       <div className="font-heading text-[72px] font-black text-gold tracking-[12px] animate-pulse relative drop-shadow-[0_0_60px_rgba(201,169,97,0.3)]">

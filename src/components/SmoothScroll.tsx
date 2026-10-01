@@ -28,7 +28,7 @@ export default function SmoothScroll() {
       const section = document.querySelector(id);
       if (section) {
         e.preventDefault();
-        lenis.scrollTo(section as HTMLElement, { offset: -80, duration: 1.4 });
+        lenis.scrollTo(section as HTMLElement, { offset: -105, duration: 1.4 });
       }
     };
 

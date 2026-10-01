@@ -49,7 +49,7 @@ export default function ProductCard({
           alt={name}
           fill
           sizes="(max-width: 768px) 100vw, 300px"
-          className="object-cover transition-transform duration-700 group-hover:scale-112"
+          className="object-cover transition-transform duration-700 group-hover:scale-110"
           loading="lazy"
         />
         <div className="card-overlay absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -102,7 +102,7 @@ export default function ProductCard({
         {/* View details action */}
         <button
           onClick={handleQuickView}
-          className="view-btn flex items-center gap-2 mt-2 px-4 py-2 border border-[#d4af37]/10 text-white hover:bg-[#d4af37]/5 hover:border-[#d4af37] hover:text-[#d4af37] rounded-lg font-heading text-[10px] font-bold tracking-[1px] uppercase transition-all duration-300 w-fit"
+          className="view-btn flex items-center gap-2 mt-2 px-4 py-2 border border-gold/10 text-white hover:bg-gold/5 hover:border-gold hover:text-gold rounded-lg font-heading text-[10px] font-bold tracking-[1px] uppercase transition-all duration-300 w-fit"
         >
           <span>View Details</span>
           <ArrowRightIcon />

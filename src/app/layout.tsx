@@ -1,6 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Playfair_Display, Inter, Poppins } from "next/font/google";
 import "./globals.css";
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -19,6 +23,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://the-vibe-vault.vercel.app"),
   title: "The Vibe Vault | Where Fashion Meets Energy",
   description: "Premium men's fashion brand. Bold streetwear, tailored layers, and everyday essentials curated in Indore.",
   keywords: ["mens fashion", "streetwear", "tailored clothing", "premium fashion", "Indore", "The Vibe Vault"],
@@ -48,8 +53,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${inter.variable} ${playfair.variable} ${poppins.variable} font-body bg-luxury-black text-text noise-overlay antialiased`}
       >
         {children}

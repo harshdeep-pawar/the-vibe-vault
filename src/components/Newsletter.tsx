@@ -9,7 +9,7 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="py-24 relative select-none overflow-hidden bg-radial-gradient from-gold/[0.03] to-transparent border-t border-b border-gold/10">
+    <section className="py-24 relative select-none overflow-hidden section-bg-rose border-t border-b border-gold/10">
       {/* Background circular light ray */}
       <div className="absolute w-[800px] h-[800px] top-[-200px] left-1/2 -translate-x-1/2 rounded-full bg-gold/[0.04] blur-[120px] pointer-events-none" />
 

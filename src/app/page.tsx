@@ -49,15 +49,16 @@ export default function HomePage() {
       <CursorGlow />
       <ParticlesCanvas />
 
-      <AnnouncementBar />
-
-      <Navbar
-        theme={theme}
-        onToggleTheme={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        onSearch={handleSearch}
-      />
+      <header className="fixed top-0 left-0 w-full z-[1000]">
+        <AnnouncementBar />
+        <Navbar
+          theme={theme}
+          onToggleTheme={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+          onSearch={handleSearch}
+        />
+      </header>
 
       <main>
         <Hero />
